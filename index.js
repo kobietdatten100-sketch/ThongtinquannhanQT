@@ -174,4 +174,4 @@ console.log("Token type:", typeof config.token);
 console.log("Token length:", config.token?.length);
 console.log("Token start:", config.token?.slice(0, 10));
 
-client.login(config.token);
+client.login(process.env.TOKEN);
