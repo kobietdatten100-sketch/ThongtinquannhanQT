@@ -170,5 +170,8 @@ embeds: [embed]
 });
 }
 });
+console.log(config);
+console.log(typeof config.token);
+console.log(config.token.length);
 
 client.login(process.env.TOKEN || config.token);
