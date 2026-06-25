@@ -170,8 +170,8 @@ embeds: [embed]
 });
 }
 });
-console.log(config);
-console.log(typeof config.token);
-console.log(config.token.length);
+console.log("Token type:", typeof config.token);
+console.log("Token length:", config.token?.length);
+console.log("Token start:", config.token?.slice(0, 10));
 
-client.login(process.env.TOKEN || config.token);
+client.login(config.token);
