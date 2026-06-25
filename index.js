@@ -23,11 +23,11 @@ GatewayIntentBits.MessageContent
 client.commands = new Collection();
 
 const commandFiles = fs
-.readdirSync("./commands")
+.readdirSync("./lệnh")
 .filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-const command = require("./commands/${file}");
+const command = require(`./lệnh/${file}`);
 client.commands.set(command.name, command);
 }
 
@@ -159,12 +159,15 @@ const embed = new EmbedBuilder()
 win ? "🎉 BẠN ĐÃ THẮNG" : "💥 BẠN ĐÃ THUA"
 )
 .setDescription(
-"🎲 Xúc xắc: ${dice1} • ${dice2} • ${dice3}\n" +
-"📊 Tổng: ${total}\n\n" +
-"🎯 Bạn chọn: ${choice.toUpperCase()}\n" +
-"🏆 Kết quả: ${result.toUpperCase()}\n\n" +
-`${win ? "➕" : "➖"} ${amount.toLocaleString()} PSCOIN\n\n` +
-"💰 Số dư: ${user.coins.toLocaleString()} PSCOIN"
+`🎲 Xúc xắc: ${dice1} • ${dice2} • ${dice3}
+📊 Tổng: ${total}
+
+🎯 Bạn chọn: ${choice.toUpperCase()}
+🏆 Kết quả: ${result.toUpperCase()}
+
+${win ? "➕" : "➖"} ${amount.toLocaleString()} PSCOIN
+
+💰 Số dư: ${user.coins.toLocaleString()} PSCOIN`
 );
 
 return interaction.reply({
