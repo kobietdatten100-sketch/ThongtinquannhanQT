@@ -13,9 +13,9 @@ const fs = require("fs");
 const config = require("./config.json");
 
 const {
-loadData,
-saveData,
-createUser
+  loadData,
+  saveData,
+  createUser
 } = require("./Database");
 
 const client = new Client({
@@ -37,9 +37,8 @@ const command = require(`./commands/${file}`);
 client.commands.set(command.name, command);
 }
 
-client.once("ready", () => {
-console.log("✅ ${client.user.tag} đã online");
-});
+client.once("clientReady", () => {
+    console.log(`✅ ${client.user.tag} đã online`);
 
 client.on("messageCreate", async (message) => {
 if (message.author.bot) return;
@@ -151,7 +150,7 @@ saveData(freshData);
 
 const embed = new EmbedBuilder()
 .setColor(win ? "Green" : "Red")
-.setTitle(win ? "🎉 BẠN ĐÃ THẮNG" : "💥 BẠN ĐÃ THUA")
+.setTitle(win ? " BẠN ĐÃ THẮNG" : " BẠN ĐÃ THUA")
 .setDescription(
 `🎲 Xúc xắc: ${dice1} • ${dice2} • ${dice3}
 
