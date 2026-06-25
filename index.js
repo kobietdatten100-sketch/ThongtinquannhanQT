@@ -29,11 +29,11 @@ GatewayIntentBits.MessageContent
 client.commands = new Collection();
 
 const commandFiles = fs
-.readdirSync("./lệnh")
+.readdirSync("./commands")
 .filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-const command = require("./lệnh/${file}");
+const command = require(`./commands/${file}`);
 client.commands.set(command.name, command);
 }
 
