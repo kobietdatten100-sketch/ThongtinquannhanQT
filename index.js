@@ -163,7 +163,7 @@ win ? "🎉 BẠN ĐÃ THẮNG" : "💥 BẠN ĐÃ THUA"
 "📊 Tổng: ${total}\n\n" +
 "🎯 Bạn chọn: ${choice.toUpperCase()}\n" +
 "🏆 Kết quả: ${result.toUpperCase()}\n\n" +
-"${win ? "➕" : "➖"} ${amount.toLocaleString()} PSCOIN\n\n" +
+`${win ? "➕" : "➖"} ${amount.toLocaleString()} PSCOIN\n\n` +
 "💰 Số dư: ${user.coins.toLocaleString()} PSCOIN"
 );
 
