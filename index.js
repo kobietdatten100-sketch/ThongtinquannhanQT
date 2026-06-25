@@ -12,6 +12,12 @@ EmbedBuilder
 const fs = require("fs");
 const config = require("./config.json");
 
+const {
+loadData,
+saveData,
+createUser
+} = require("./Database");
+
 const client = new Client({
 intents: [
 GatewayIntentBits.Guilds,
@@ -27,7 +33,7 @@ const commandFiles = fs
 .filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-const command = require(`./lệnh/${file}`);
+const command = require("./lệnh/${file}");
 client.commands.set(command.name, command);
 }
 
@@ -58,7 +64,7 @@ console.error(err);
 }
 });
 
-client.on("interactionCreate", async interaction => {
+client.on("interactionCreate", async (interaction) => {
 
 if (interaction.isButton()) {
 
@@ -101,31 +107,21 @@ const amount = Number(
 interaction.fields.getTextInputValue("amount")
 );
 
-if (isNaN(amount)) {
+if (isNaN(amount) || amount <= 0) {
 return interaction.reply({
 content: "❌ Số tiền không hợp lệ.",
 ephemeral: true
 });
 }
 
-if (amount <= 0) {
-return interaction.reply({
-content: "❌ Không được nhập số âm hoặc 0.",
-ephemeral: true
-});
-}
-
-const {
-loadData,
-saveData,
-createUser
-} = require("./utils/database");
-
 const data = loadData();
 
+if (!data[interaction.user.id]) {
 createUser(interaction.user.id);
+}
 
-const user = data[interaction.user.id];
+const freshData = loadData();
+const user = freshData[interaction.user.id];
 
 if (user.coins < amount) {
 return interaction.reply({
@@ -151,15 +147,14 @@ win = true;
 user.coins -= amount;
 }
 
-saveData(data);
+saveData(freshData);
 
 const embed = new EmbedBuilder()
 .setColor(win ? "Green" : "Red")
-.setTitle(
-win ? "🎉 BẠN ĐÃ THẮNG" : "💥 BẠN ĐÃ THUA"
-)
+.setTitle(win ? "🎉 BẠN ĐÃ THẮNG" : "💥 BẠN ĐÃ THUA")
 .setDescription(
 `🎲 Xúc xắc: ${dice1} • ${dice2} • ${dice3}
+
 📊 Tổng: ${total}
 
 🎯 Bạn chọn: ${choice.toUpperCase()}
@@ -174,7 +169,6 @@ return interaction.reply({
 embeds: [embed]
 });
 }
-
 });
 
 client.login(config.token);
