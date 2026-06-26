@@ -151,7 +151,7 @@ if (!room) {
 
     }
 
-    if(room.players.length<3){
+    if(room.players.length<1){
 
         return interaction.reply({
             content:"❌ Cần ít nhất 1 người.",
