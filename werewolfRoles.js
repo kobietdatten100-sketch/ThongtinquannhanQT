@@ -1,46 +1,56 @@
-function getRoles(playerCount) {
+function getRoles(count) {
 
-    if (playerCount < 5) return [];
+    let roles = [];
 
-    if (playerCount <= 6) {
-        return [
+    if (count == 5) {
+        roles = [
             "🐺 Sói",
             "🔮 Tiên tri",
-            ...Array(playerCount - 2).fill("👨 Dân")
+            "👨 Dân",
+            "👨 Dân",
+            "👨 Dân"
         ];
     }
 
-    if (playerCount <= 8) {
-        return [
+    else if (count == 6) {
+        roles = [
+            "🐺 Sói",
+            "🐺 Sói",
+            "🔮 Tiên tri",
+            "👨 Dân",
+            "👨 Dân",
+            "👨 Dân"
+        ];
+    }
+
+    else if (count == 7) {
+        roles = [
             "🐺 Sói",
             "🐺 Sói",
             "🔮 Tiên tri",
             "🛡️ Bảo vệ",
-            ...Array(playerCount - 4).fill("👨 Dân")
+            "👨 Dân",
+            "👨 Dân",
+            "👨 Dân"
         ];
     }
 
-    if (playerCount <= 10) {
-        return [
-            "🐺 Sói",
-            "🐺 Sói",
-            "🔮 Tiên tri",
-            "🛡️ Bảo vệ",
-            "🧪 Phù thủy",
-            ...Array(playerCount - 5).fill("👨 Dân")
-        ];
+    else {
+
+        roles = [];
+
+        while (roles.length < count) {
+            roles.push("👨 Dân");
+        }
+
+        roles[0] = "🐺 Sói";
+        roles[1] = "🐺 Sói";
+        roles[2] = "🔮 Tiên tri";
+        roles[3] = "🛡️ Bảo vệ";
+
     }
 
-    return [
-        "🐺 Sói",
-        "🐺 Sói",
-        "🐺 Sói",
-        "🔮 Tiên tri",
-        "🛡️ Bảo vệ",
-        "🧪 Phù thủy",
-        "🏹 Thợ săn",
-        ...Array(playerCount - 7).fill("👨 Dân")
-    ];
+    return roles;
 
 }
 
