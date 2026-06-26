@@ -154,21 +154,58 @@ if (!room) {
     if(room.players.length<3){
 
         return interaction.reply({
-            content:"❌ Cần ít nhất 3 người.",
+            content:"❌ Cần ít nhất 1 người.",
             ephemeral:true
         });
 
     }
 
-    await interaction.update({
+    const startEmbed = new EmbedBuilder()
+    .setColor(0x8e44ad)
+    .setTitle("🐺 WEREWOLF • GAME BẮT ĐẦU")
+    .setDescription(
+`╔════════════════════╗
+🌙 **ĐÊM ĐẦU TIÊN BẮT ĐẦU**
+╚════════════════════╝
 
-        content:"🌙 Đang chia vai...",
+🎭 Đang **chia vai trò** cho người chơi...
 
-        embeds:[],
+📨 Vai trò sẽ được gửi qua **Tin nhắn riêng (DM)**.
 
-        components:[]
+⚠️ **Không tiết lộ vai trò của bạn.**
 
-    });
+👥 **Số người chơi:** ${room.players.length}/16`
+    )
+    .addFields(
+        {
+            name: "👑 Chủ phòng",
+            value: `<@${room.owner}>`,
+            inline: true
+        },
+        {
+            name: "🎮 Trạng thái",
+            value: "🟢 Đang chia vai",
+            inline: true
+        },
+        {
+            name: "🌙 Giai đoạn",
+            value: `Đêm ${room.round}`,
+            inline: true
+        }
+    )
+    .setFooter({
+        text: "PSCOIN CASINO • WEREWOLF"
+    })
+    .setTimestamp();
+
+await interaction.update({
+    embeds: [startEmbed],
+    components: []
+});
+
+await startWerewolf(room, client);
+
+return;
 
     await startWerewolf(room,client);
 
@@ -186,7 +223,7 @@ if (!room) {
                 `🌙 Hãy tập hợp người chơi.\n\n` +
                 `**Người chơi (${room.players.length}/16)**\n` +
                 `${list}\n\n` +
-                `⚠️ Cần ít nhất **3 người** để bắt đầu.`
+                `⚠️ Cần ít nhất **1 người** để bắt đầu.`
             );
 
         return interaction.update({
