@@ -13,7 +13,7 @@ const roles = [
     "👴 Già Làng",
     "🦊 Cáo",
     "😈 Kẻ Phản Bội",
-    "👮 Cảnh Trưởng",
+    "👮 Cảnh sát Trưởng",
     "🧙 Pháp Sư"
 ];
 
