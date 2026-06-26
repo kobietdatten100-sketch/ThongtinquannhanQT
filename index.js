@@ -10,7 +10,11 @@ const {
 } = require("discord.js");
 
 const { rooms } = require("./commands/masoi");
+
+console.log("Rooms:", rooms);
+
 const fs = require("fs");
+
 const config = require("./config.json");
 
 const {
@@ -77,8 +81,18 @@ client.on("interactionCreate", async (interaction) => {
     // ================= MA SÓI =================
     if (interaction.customId.startsWith("ww_")) {
 
-        const room = rooms.get(interaction.guild.id);
+const room = rooms.get(interaction.guild.id);
 
+console.log("Guild ID:", interaction.guild.id);
+console.log("Room:", room);
+console.log("Rooms keys:", [...rooms.keys()]);
+
+if (!room) {
+    return interaction.reply({
+        content: "❌ Phòng không tồn tại.",
+        ephemeral: true
+    });
+}
         if (!room) {
             return interaction.reply({
                 content: "❌ Phòng không tồn tại.",
