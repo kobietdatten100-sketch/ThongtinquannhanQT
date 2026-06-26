@@ -186,7 +186,7 @@ if (!room) {
                 `🌙 Hãy tập hợp người chơi.\n\n` +
                 `**Người chơi (${room.players.length}/16)**\n` +
                 `${list}\n\n` +
-                `⚠️ Cần ít nhất **5 người** để bắt đầu.`
+                `⚠️ Cần ít nhất **3 người** để bắt đầu.`
             );
 
         return interaction.update({
