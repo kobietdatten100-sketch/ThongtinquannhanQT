@@ -9,66 +9,59 @@ const rooms = new Map();
 
 module.exports = {
     name: "masoi",
+    rooms,
 
     async execute(client, message) {
 
         if (rooms.has(message.guild.id)) {
-            return message.reply("❌ Máy chủ đã có một phòng Ma Sói.");
+            return message.reply("❌ Đã có một phòng Ma Sói.");
         }
 
         rooms.set(message.guild.id, {
             owner: message.author.id,
-            players: [message.author.id]
+            players: [message.author.id],
+            channel: message.channel,
+            round: 1,
+            deadPlayers: [],
+            roles: {}
         });
 
         const embed = new EmbedBuilder()
-            .setColor("#5865F2")
-            .setTitle("🐺 MA SÓI - PHÒNG CHỜ")
+            .setColor("DarkPurple")
+            .setTitle("🐺 PHÒNG MA SÓI")
             .setDescription(
-                "**Chủ phòng:** <@" + message.author.id + ">\n\n" +
-                "🌙 Hãy tập hợp người chơi để bắt đầu.\n\n" +
-                "**Người chơi (1/16)**\n" +
-                "<@" + message.author.id + ">\n\n" +
-                "⚠️ Cần tối thiểu **5 người** để bắt đầu."
+                `👑 Chủ phòng: <@${message.author.id}>\n\n` +
+                `👥 Người chơi (1/16)\n<@${message.author.id}>\n\n` +
+                `⚠️ Cần ít nhất 5 người để bắt đầu.`
             );
 
-        const row1 = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId("ww_join")
-                    .setLabel("✅ Tham Gia")
-                    .setStyle(ButtonStyle.Success),
+        const row = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId("ww_join")
+                .setLabel("➕ Tham gia")
+                .setStyle(ButtonStyle.Success),
 
-                new ButtonBuilder()
-                    .setCustomId("ww_leave")
-                    .setLabel("❌ Rời Khỏi")
-                    .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId("ww_leave")
+                .setLabel("➖ Rời phòng")
+                .setStyle(ButtonStyle.Secondary),
 
-                new ButtonBuilder()
-                    .setCustomId("ww_cancel")
-                    .setLabel("🗑️ Hủy")
-                    .setStyle(ButtonStyle.Danger)
-            );
+            new ButtonBuilder()
+                .setCustomId("ww_start")
+                .setLabel("🚀 Bắt đầu")
+                .setStyle(ButtonStyle.Primary),
 
-        const row2 = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId("ww_start")
-                    .setLabel("🚀 Bắt Đầu")
-                    .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
+                .setCustomId("ww_cancel")
+                .setLabel("❌ Hủy")
+                .setStyle(ButtonStyle.Danger)
+        );
 
-                new ButtonBuilder()
-                    .setCustomId("ww_help")
-                    .setLabel("📖 Hướng Dẫn")
-                    .setStyle(ButtonStyle.Secondary)
-            );
-
-        await message.reply({
+        const msg = await message.channel.send({
             embeds: [embed],
-            components: [row1, row2]
+            components: [row]
         });
 
+        rooms.get(message.guild.id).message = msg;
     }
 };
-
-module.exports.rooms = rooms;
