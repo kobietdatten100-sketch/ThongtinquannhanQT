@@ -10,7 +10,7 @@ const {
 } = require("discord.js");
 
 const { rooms } = require("./commands/masoi");
-
+const { startWerewolf } = require("./startWerewolf");
 console.log("Rooms:", rooms);
 
 const fs = require("fs");
@@ -140,28 +140,39 @@ if (!room) {
 
         }
 
-        else if (interaction.customId === "ww_start") {
+        if (interaction.customId === "ww_start") {
 
-            if (interaction.user.id !== room.owner) {
-                return interaction.reply({
-                    content: "❌ Chỉ chủ phòng mới được bắt đầu.",
-                    ephemeral: true
-                });
-            }
+    if (interaction.user.id !== room.owner) {
 
-            if (room.players.length < 5) {
-                return interaction.reply({
-                    content: "❌ Cần ít nhất 5 người.",
-                    ephemeral: true
-                });
-            }
+        return interaction.reply({
+            content:"❌ Chỉ chủ phòng mới được bắt đầu.",
+            ephemeral:true
+        });
 
-            return interaction.update({
-                content: "🎉 Game đang bắt đầu...",
-                embeds: [],
-                components: []
-            });
+    }
 
+    if(room.players.length<5){
+
+        return interaction.reply({
+            content:"❌ Cần ít nhất 5 người.",
+            ephemeral:true
+        });
+
+    }
+
+    await interaction.update({
+
+        content:"🌙 Đang chia vai...",
+
+        embeds:[],
+
+        components:[]
+
+    });
+
+    await startWerewolf(room,client);
+
+    return;
         }
 
         const list = room.players
