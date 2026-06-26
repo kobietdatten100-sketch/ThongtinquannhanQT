@@ -151,10 +151,10 @@ if (!room) {
 
     }
 
-    if(room.players.length<5){
+    if(room.players.length<3){
 
         return interaction.reply({
-            content:"❌ Cần ít nhất 5 người.",
+            content:"❌ Cần ít nhất 3 người.",
             ephemeral:true
         });
 
