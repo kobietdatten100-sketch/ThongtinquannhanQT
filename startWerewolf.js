@@ -7,7 +7,8 @@ function shuffle(array) {
 async function startWerewolf(room, client) {
 
     const roles = shuffle(getRoles(room.players.length));
-
+console.log("Players:", room.players.length);
+console.log("Roles:", roles);
     room.roles = {};
 
     for (let i = 0; i < room.players.length; i++) {
