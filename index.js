@@ -9,6 +9,7 @@ const {
     EmbedBuilder
 } = require("discord.js");
 
+const { rooms } = require("./commands/masoi");
 const fs = require("fs");
 const config = require("./config.json");
 
@@ -184,6 +185,118 @@ ${win ? "➕ Thắng" : "➖ Thua"}: **${amount.toLocaleString()} PSCOIN**
         embeds: [embed]
     });
 });
+// ================= MA SÓI =================
+
+if (interaction.isButton()) {
+
+    if (!interaction.customId.startsWith("ww_")) return;
+
+    const room = rooms.get(interaction.guild.id);
+
+    if (!room) {
+        return interaction.reply({
+            content: "❌ Phòng không tồn tại.",
+            ephemeral: true
+        });
+    }
+
+    // Tham gia
+    if (interaction.customId === "ww_join") {
+
+        if (room.players.includes(interaction.user.id)) {
+            return interaction.reply({
+                content: "❌ Bạn đã tham gia.",
+                ephemeral: true
+            });
+        }
+
+        if (room.players.length >= 16) {
+            return interaction.reply({
+                content: "❌ Phòng đã đầy.",
+                ephemeral: true
+            });
+        }
+
+        room.players.push(interaction.user.id);
+
+    }
+
+    // Rời phòng
+    if (interaction.customId === "ww_leave") {
+
+        room.players = room.players.filter(
+            id => id !== interaction.user.id
+        );
+
+    }
+
+    // Hủy phòng
+    if (interaction.customId === "ww_cancel") {
+
+        if (interaction.user.id !== room.owner) {
+
+            return interaction.reply({
+                content: "❌ Chỉ chủ phòng mới được hủy.",
+                ephemeral: true
+            });
+
+        }
+
+        rooms.delete(interaction.guild.id);
+
+        return interaction.update({
+            content: "🗑️ Phòng đã bị hủy.",
+            embeds: [],
+            components: []
+        });
+
+    }
+
+    // Bắt đầu
+    if (interaction.customId === "ww_start") {
+
+        if (interaction.user.id !== room.owner) {
+
+            return interaction.reply({
+                content: "❌ Chỉ chủ phòng mới được bắt đầu.",
+                ephemeral: true
+            });
+
+        }
+
+        if (room.players.length < 5) {
+
+            return interaction.reply({
+                content: "❌ Cần ít nhất 5 người.",
+                ephemeral: true
+            });
+
+        }
+
+        return interaction.reply({
+            content: "🎉 Game sẽ bắt đầu ở File 3..."
+        });
+
+    }
+
+    const list = room.players
+        .map(id => `<@${id}>`)
+        .join("\n");
+
+    const embed = EmbedBuilder.from(interaction.message.embeds[0])
+        .setDescription(
+            `**Chủ phòng:** <@${room.owner}>\n\n` +
+            `🌙 Hãy tập hợp người chơi để bắt đầu.\n\n` +
+            `**Người chơi (${room.players.length}/16)**\n` +
+            `${list}\n\n` +
+            `⚠️ Cần tối thiểu **5 người** để bắt đầu.`
+        );
+
+    return interaction.update({
+        embeds: [embed]
+    });
+
+        }
 // ================= ĐĂNG NHẬP BOT =================
 
 // Nếu dùng Railway Variables
